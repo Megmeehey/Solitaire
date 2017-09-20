@@ -1,8 +1,9 @@
 package com.github.megmeehey;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
-abstract class CardPile {
+public abstract class CardPile {
     // coordinates of the card pile
     protected int x;
     protected int y;
@@ -12,10 +13,10 @@ abstract class CardPile {
     CardPile(int x, int y) {
         this.x = x;
         this.y = y;
-        cards = null;
+        cards = new Array<Card>();
     }
 
-    public Card top() {
+    Card top() {
         return cards.first();
     }
 
@@ -37,7 +38,7 @@ abstract class CardPile {
 
     public abstract void select(int tx, int ty);
 
-    public abstract void display();
+    public abstract void display(SpriteBatch mainBatch);
 
     public boolean canTake(Card aCard) {
         return false;

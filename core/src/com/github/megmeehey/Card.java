@@ -2,17 +2,15 @@ package com.github.megmeehey;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import java.io.File;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 class Card {
     public enum Suit { CLUBS, DIAMONDS, HEARTS, SPADES }
     public enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING }
     public enum Color { RED, BLACK }
 
-    /*private static final String names[] = {"A", "2", "3", "4", "5", "6",
-        "7", "8", "9", "10", "J", "Q", "K"};*/
+    public static final Texture backside = new Texture("cardback.png");
 
-    // data fields
     private final Suit suit;
     private final Rank rank;
     private final FileHandle fileHandle;
@@ -34,7 +32,7 @@ class Card {
     }
 
     public Color getColor() {
-        return getSuit().equals(Suit.CLUBS) || getSuit().equals(Suit.SPADES) ? Color.RED : Color.BLACK;
+        return getSuit().equals(Suit.CLUBS) || getSuit().equals(Suit.SPADES) ? Color.BLACK : Color.RED;
     }
 
     public Texture getTexture() {
@@ -44,11 +42,19 @@ class Card {
         return texture;
     }
 
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
     public boolean isFaceUp() {
         return faceup;
     }
 
     public void flip() {
         faceup = !faceup;
+    }
+
+    public void draw(SpriteBatch mainBatch, int x, int y) {
+        mainBatch.draw(texture, x, y);
     }
 }

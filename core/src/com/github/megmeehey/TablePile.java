@@ -1,6 +1,6 @@
 package com.github.megmeehey;
 
-import java.awt.*;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 class TablePile extends CardPile {
 
@@ -57,21 +57,20 @@ class TablePile extends CardPile {
         push(topCard);
     }
 
-    private int stackDisplay(Card aCard) {
+    private void stackDisplay(SpriteBatch mainBatch, Card aCard) {
         // here goes logic for display
-//        int localy;
-//        if (aCard == null) {
-//            return y;
-//        }
-//        localy = stackDisplay(g, aCard.link);
-//        aCard.draw(g, x, localy);
-//        return localy + 35;
-        return 35;
+        int i = -30;
+        for (Card card: cards) {
+            i += 30;
+            mainBatch.draw(Card.backside, x, y + i);
+        }
     }
 
     @Override
-    public void display() {
-        stackDisplay(top());
+    public void display(SpriteBatch mainBatch) {
+        // если не пустая, отрисовать их друг на друге
+        stackDisplay(mainBatch, top());
+        // иначе, отрисовать пустую ячейку для карт
+        // mainBatch.draw(Card.empty, x, y);
     }
-
 }

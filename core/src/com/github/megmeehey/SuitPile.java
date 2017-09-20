@@ -1,6 +1,8 @@
 package com.github.megmeehey;
 
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 class SuitPile extends CardPile {
 
     SuitPile(int x, int y) {
@@ -18,8 +20,10 @@ class SuitPile extends CardPile {
     }
 
     @Override
-    public void display() {
-        // TODO
+    public void display(SpriteBatch mainBatch) {
+        // if непустая отрисовать последнюю положенную карту
+        mainBatch.draw(Card.backside, x, y);
+        // иначе, отрисовать пустую ячейку для карт
     }
 
     @Override

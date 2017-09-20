@@ -1,6 +1,8 @@
 package com.github.megmeehey;
 
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 class DiscardPile extends CardPile {
 
     DiscardPile(int x, int y) {
@@ -38,7 +40,9 @@ class DiscardPile extends CardPile {
     }
 
     @Override
-    public void display() {
-        // TODO
+    public void display(SpriteBatch mainBatch) {
+        // if непустая отрисовать рубашку
+        mainBatch.draw(Card.backside, x, y);
+        // иначе, отрисовать пустую ячейку для карт
     }
 }
