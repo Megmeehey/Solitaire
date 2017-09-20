@@ -1,64 +1,64 @@
 package com.github.megmeehey;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Array;
 
-import java.awt.*;
+import java.util.Deque;
 
-class CardPile {
+abstract class CardPile {
     // coordinates of the card pile
     protected int x;
     protected int y;
-    private Card firstCard;
+    private Array<Card> cards;
+    private int index;
 
     CardPile(int x, int y) {
         this.x = x;
         this.y = y;
-        firstCard = null;
+        cards = null;
     }
 
-
-    // access to cards are not overridden
-
     public Card top() {
-        return firstCard;
+        return cards.first();
     }
 
     public boolean empty() {
-        return firstCard == null;
+        return cards.size == 0;
     }
 
-    public void push(Card aCard) {
-        aCard.link = firstCard;
-        firstCard = aCard;
+    public void push(Card cardToAdd) {
+        cards.add(cardToAdd);
     }
 
     public Card pop() {
-        Card result = null;
-        if (firstCard != null) {
-            result = firstCard;
-            firstCard = firstCard.link;
-        }
-        return result;
+        return cards.pop();
     }
 
-    // the following are sometimes overridden
+    public void shuffleDeck() {
+        cards.shuffle();
+        index = 0;
+    }
+
+    public int getIndex() {
+        return index;
+    }
 
     public boolean includes(int tx, int ty) {
-        return x <= tx && tx <= x + Card.width &&
-                y <= ty && ty <= y + Card.height;
+//        return x <= tx && tx <= x + Card.width &&
+//                y <= ty && ty <= y + Card.height;
     }
 
     public void select(int tx, int ty) {
         // do nothing
     }
 
-
-    public void display(Graphics g) {
-        g.setColor(Color.black);
-        if (firstCard == null) {
-            g.drawRect(x, y, Card.width, Card.height);
-        } else {
-            firstCard.draw(g, x, y);
-        }
+    public void display() {
+//        g.setColor(Color.black);
+//        if (firstCard == null) {
+//            g.drawRect(x, y, Card.width, Card.height);
+//        } else {
+//            firstCard.draw(g, x, y);
+//        }
     }
 
     public boolean canTake(Card aCard) {
