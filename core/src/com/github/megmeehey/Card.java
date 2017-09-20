@@ -21,7 +21,7 @@ class Card {
     public Card(Suit suit, Rank rank, FileHandle fileHandle) {
         this.suit = suit;
         this.rank = rank;
-        this.color = getSuit().equals(Suit.CLUBS) || getSuit().equals(Suit.SPADES) ? Color.BLACK : Color.RED;
+        this.color = ((getSuit()  == Suit.CLUBS) || (getSuit() == Suit.SPADES)) ? Color.BLACK : Color.RED;
         this.texture = new Texture(fileHandle);
         this.faceup = false;
     }
@@ -50,6 +50,10 @@ class Card {
 
     public void flip() {
         faceup = !faceup;
+    }
+
+    public boolean isNextSuitOf(Card other) {
+        return this.getRank() == Card.Rank.values()[(other.getRank().ordinal() + 1) % Rank.values().length];
     }
 
     public void draw(SpriteBatch mainBatch, int x, int y) {

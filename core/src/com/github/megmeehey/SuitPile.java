@@ -1,6 +1,5 @@
 package com.github.megmeehey;
 
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 class SuitPile extends CardPile {
@@ -11,19 +10,25 @@ class SuitPile extends CardPile {
 
     @Override
     public boolean canTake(Card aCard) {
-        if (empty()) {
-            return false;
+        if (isEmpty()) {
+            // if SuitPile is empty, we can store card here only if it is ACE.
+            return aCard.getRank() == Card.Rank.ACE;
         }
-        Card topCard = top();
-        return (aCard.getSuit() == topCard.getSuit()) &&
-                (aCard.getRank() == Card.Rank.values()[topCard.getRank().ordinal() + 1]); // should be nextRank
+        Card topCard = getFirst();
+        return (aCard.getSuit() == topCard.getSuit()) && (aCard.isNextSuitOf(topCard)); // should be nextRank
     }
 
     @Override
     public void display(SpriteBatch mainBatch) {
-        // if непустая отрисовать последнюю положенную карту
-        mainBatch.draw(Card.backside, x, y);
-        // иначе, отрисовать пустую ячейку для карт
+        if (cards.isEmpty()) {
+            mainBatch.draw(Card.EMPTY, x, y);
+        } else {
+            Card card = cards.peek();
+            if (!card.isFaceUp()) {
+                card.flip();
+            }
+            mainBatch.draw(card.getTexture(), x, y);
+        }
     }
 
     @Override

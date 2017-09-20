@@ -23,7 +23,7 @@ public abstract class CardPile {
      */
     Card getFirst() {
         return cards.getFirst();
-    }
+    } // top
 
     /**
      * Checks if the CardPile is empty
@@ -31,7 +31,7 @@ public abstract class CardPile {
      */
     public boolean isEmpty() {
         return cards.isEmpty();
-    }
+    } // empty
 
     public void push(Card cardToAdd) {
         cards.push(cardToAdd);
