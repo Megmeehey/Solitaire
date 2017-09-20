@@ -1,6 +1,5 @@
 package com.github.megmeehey;
 
-
 import java.awt.*;
 
 class TablePile extends CardPile {
@@ -8,9 +7,9 @@ class TablePile extends CardPile {
     TablePile(int x, int y, int c) {
         // initialize the parent class
         super(x, y);
-        // then initialize our pile of cards
-        for (int i = 0; i < c; i++) {
-            push(Solitare.deckPile.pop());
+            // then initialize our pile of cards
+            for (int i = 0; i < c; i++) {
+            push(Solitaire.deckPile.pop());
         }
         // flip topmost card face up
         top().flip();
@@ -19,18 +18,11 @@ class TablePile extends CardPile {
     @Override
     public boolean canTake(Card aCard) {
         if (empty()) {
-            return aCard.getRank() == 12;
+            return false;
         }
         Card topCard = top();
         return (aCard.getColor() != topCard.getColor()) &&
-                (aCard.getRank() == topCard.getRank() - 1);
-    }
-
-    @Override
-    public boolean includes(int tx, int ty) {
-        // don't test bottom of card
-        return x <= tx && tx <= x + Card.width &&
-                y <= ty;
+                (aCard.getRank() == Card.Rank.values()[topCard.getRank().ordinal() - 1]);
     }
 
     @Override
@@ -49,15 +41,15 @@ class TablePile extends CardPile {
         // else see if any suit pile can take card
         topCard = pop();
         for (int i = 0; i < 4; i++) {
-            if (Solitare.suitPile[i].canTake(topCard)) {
-                Solitare.suitPile[i].push(topCard);
+            if (Solitaire.suitPile[i].canTake(topCard)) {
+                Solitaire.suitPile[i].push(topCard);
                 return;
             }
         }
         // else see if any other table pile can take card
         for (int i = 0; i < 7; i++) {
-            if (Solitare.tableau[i].canTake(topCard)) {
-                Solitare.tableau[i].push(topCard);
+            if (Solitaire.tableau[i].canTake(topCard)) {
+                Solitaire.tableau[i].push(topCard);
                 return;
             }
         }
@@ -65,19 +57,21 @@ class TablePile extends CardPile {
         push(topCard);
     }
 
-    private int stackDisplay(Graphics g, Card aCard) {
-        int localy;
-        if (aCard == null) {
-            return y;
-        }
-        localy = stackDisplay(g, aCard.link);
-        aCard.draw(g, x, localy);
-        return localy + 35;
+    private int stackDisplay(Card aCard) {
+        // here goes logic for display
+//        int localy;
+//        if (aCard == null) {
+//            return y;
+//        }
+//        localy = stackDisplay(g, aCard.link);
+//        aCard.draw(g, x, localy);
+//        return localy + 35;
+        return 35;
     }
 
     @Override
-    public void display(Graphics g) {
-        stackDisplay(g, top());
+    public void display() {
+        stackDisplay(top());
     }
 
 }

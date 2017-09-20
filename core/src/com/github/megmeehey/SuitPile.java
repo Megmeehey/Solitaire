@@ -10,10 +10,20 @@ class SuitPile extends CardPile {
     @Override
     public boolean canTake(Card aCard) {
         if (empty()) {
-            return aCard.getRank() == 0;
+            return false;
         }
         Card topCard = top();
         return (aCard.getSuit() == topCard.getSuit()) &&
-                (aCard.getRank() == 1 + topCard.getRank());
+                (aCard.getRank() == Card.Rank.values()[topCard.getRank().ordinal() + 1]); // should be nextRank
+    }
+
+    @Override
+    public void display() {
+        // TODO
+    }
+
+    @Override
+    public void select(int tx, int ty) {
+        // TODO
     }
 }
