@@ -10,7 +10,7 @@ class DeckPile extends CardPile {
     DeckPile(int x, int y) {
         super(x, y);
         loadDeck();
-        shuffleDeck();
+        this.cards = shuffleDeck();
     }
 
     public Deque<Card> shuffleDeck() {

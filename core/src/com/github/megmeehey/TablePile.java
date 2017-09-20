@@ -12,27 +12,28 @@ class TablePile extends CardPile {
             push(Solitaire.deckPile.pop());
         }
         // flip topmost card face up
-        top().flip();
+        getFirst().flip();
     }
 
     @Override
     public boolean canTake(Card aCard) {
-        if (empty()) {
-            return false;
+        if (isEmpty()) {
+            // if empty, we can put here only the King
+            return aCard.getRank() == Card.Rank.KING;
         }
-        Card topCard = top();
+        Card topCard = getFirst();
         return (aCard.getColor() != topCard.getColor()) &&
-                (aCard.getRank() == Card.Rank.values()[topCard.getRank().ordinal() - 1]);
+                (topCard.isNextSuitOf(aCard));
     }
 
     @Override
     public void select(int tx, int ty) {
-        if (empty()) {
+        if (isEmpty()) {
             return;
         }
 
         // if face down, then flip
-        Card topCard = top();
+        Card topCard = getFirst();
         if (!topCard.isFaceUp()) {
             topCard.flip();
             return;
@@ -57,20 +58,20 @@ class TablePile extends CardPile {
         push(topCard);
     }
 
-    private void stackDisplay(SpriteBatch mainBatch, Card aCard) {
-        // here goes logic for display
-        int i = -30;
-        for (Card card: cards) {
-            i += 30;
-            mainBatch.draw(Card.backside, x, y + i);
-        }
-    }
-
     @Override
     public void display(SpriteBatch mainBatch) {
-        // если не пустая, отрисовать их друг на друге
-        stackDisplay(mainBatch, top());
-        // иначе, отрисовать пустую ячейку для карт
-        // mainBatch.draw(Card.empty, x, y);
+        if (isEmpty()) {
+            mainBatch.draw(Card.EMPTY, x, y);
+        } else {
+            int i = 0;
+            for (Card card : cards) {
+                if (i != cards.size() - 1) {
+                    mainBatch.draw(Card.BACKSIDE, x, y - i * 40);
+                    i++;
+                } else {
+                    mainBatch.draw(card.getTexture(), x, y - i * 40);
+                }
+            }
+        }
     }
 }
