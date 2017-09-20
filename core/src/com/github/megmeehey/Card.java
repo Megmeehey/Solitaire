@@ -9,22 +9,23 @@ class Card {
     public enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING }
     public enum Color { RED, BLACK }
 
-    public static final Texture backside = new Texture("cardback.png");
+    public static final Texture BACKSIDE = new Texture("cardback.png");
+    public static final Texture EMPTY = new Texture("empty.png");
 
     private final Suit suit;
     private final Rank rank;
-    private final FileHandle fileHandle;
+    private final Color color;
     private boolean faceup;
     private Texture texture;
 
     public Card(Suit suit, Rank rank, FileHandle fileHandle) {
         this.suit = suit;
         this.rank = rank;
-        this.fileHandle = fileHandle;
-        faceup = false;
+        this.color = getSuit().equals(Suit.CLUBS) || getSuit().equals(Suit.SPADES) ? Color.BLACK : Color.RED;
+        this.texture = new Texture(fileHandle);
+        this.faceup = false;
     }
 
-    // access attributes of card
     public Suit getSuit() { return suit; }
 
     public Rank getRank() {
@@ -32,13 +33,10 @@ class Card {
     }
 
     public Color getColor() {
-        return getSuit().equals(Suit.CLUBS) || getSuit().equals(Suit.SPADES) ? Color.BLACK : Color.RED;
+        return color;
     }
 
     public Texture getTexture() {
-        if (texture == null) {
-            texture = new Texture(fileHandle);
-        }
         return texture;
     }
 

@@ -4,17 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.github.megmeehey.Solitaire;
 
-class DeckPile extends CardPile {
+import java.util.*;
 
+class DeckPile extends CardPile {
     DeckPile(int x, int y) {
         super(x, y);
         loadDeck();
         shuffleDeck();
     }
 
-    public void shuffleDeck() {
-        cards.shuffle();
-        index = 0;
+    public Deque<Card> shuffleDeck() {
+            Deque<Card> shuffledDeck = new LinkedList<Card>();
+            List<Card> ls = (List<Card>) cards;
+            while (ls.size() > 0) {
+                int index = (int) (Math.random() * cards.size());
+                shuffledDeck.add(ls.remove(index));
+            }
+            return shuffledDeck;
     }
 
     private void loadDeck() {
@@ -77,16 +83,23 @@ class DeckPile extends CardPile {
 
     @Override
     public void display(SpriteBatch mainBatch) {
-        // if непустая, отрисовать рубашку
-        mainBatch.draw(cards.first().getTexture(), x, y);
-        // иначе, отрисовать пустую ячейку для карты
+        if (cards.isEmpty()) {
+            mainBatch.draw(Card.EMPTY, x, y);
+        } else {
+            mainBatch.draw(Card.BACKSIDE, x, y);
+        }
     }
 
+    /**
+     * On click if empty, remove all cards from discard and move to deck
+     * else, push to DiscardPile first element of this deque and remove it from DeckPile
+     * @param tx
+     * @param ty
+     */
     @Override
     public void select(int tx, int ty) {
-        if (empty()) {
-            Card card;
-            card = Solitaire.discardPile.pop();
+        if (isEmpty()) {
+            Card card = Solitaire.discardPile.pop();
             while (card != null) {
                 if (card.isFaceUp()) {
                     card.flip();
@@ -94,8 +107,9 @@ class DeckPile extends CardPile {
                 Solitaire.deckPile.push(card);
                 card = Solitaire.discardPile.pop();
             }
-            return;
+        } else {
+            Solitaire.discardPile.push(pop());
         }
-        Solitaire.discardPile.push(pop());
+        return;
     }
 }
