@@ -12,6 +12,7 @@ import java.awt.*;
 public class Solitaire extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+
 	static DeckPile deckPile;
 	static DiscardPile discardPile;
 	static TablePile tableau[];
