@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectSet;
@@ -19,7 +21,7 @@ import com.badlogic.gdx.utils.Pool;
 import static com.github.megmeehey.Solitaire.CARD_HEIGHT;
 import static com.github.megmeehey.Solitaire.CARD_WIDTH;
 
-public class Card extends Renderable {
+public class Card {
     public enum Suit {
         Club("club", 0), Diamond("diamond", 1), Heart("heart", 2), Spade("spade", 3);
         public final String name;
@@ -88,6 +90,8 @@ public class Card extends Renderable {
     public final float[] vertices;
     public final short[] indices;
     public final Matrix4 transform = new Matrix4();
+    public final Vector3 position = new Vector3();
+    public float angle;
     private boolean isFaceUp;
 
     public Card(Suit suit, Rank rank, TextureAtlas atlas) {
@@ -115,6 +119,18 @@ public class Card extends Renderable {
         return color;
     }
 
+    public void flip() {
+        isFaceUp = !isFaceUp;
+    }
+
+    public boolean isFaceUp() {
+        return isFaceUp;
+    }
+
+    public boolean isNextSuitOf(Card other) {
+        return this.getRank().value == other.getRank().value + 1;
+    }
+
     private static float[] convert(float[] front, float[] back) {
         return new float[] {
                 front[Batch.X2], front[Batch.Y2], 0, 0, 0, 1, front[Batch.U2], front[Batch.V2],
@@ -129,15 +145,10 @@ public class Card extends Renderable {
         };
     }
 
-    public void flip() {
-        isFaceUp = !isFaceUp;
+    public void update() {
+        float z = position.z + 0.5f * Math.abs(MathUtils.sinDeg(angle));
+        transform.setToRotation(Vector3.Y, angle);
+        transform.trn(position.x, position.y, z);
     }
 
-    public boolean isFaceUp() {
-        return isFaceUp;
-    }
-
-    public boolean isNextSuitOf(Card other) {
-        return this.getRank().value == other.getRank().value + 1;
-    }
 }
