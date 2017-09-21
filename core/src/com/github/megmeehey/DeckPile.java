@@ -1,94 +1,87 @@
 package com.github.megmeehey;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.github.megmeehey.Solitaire;
-
-import java.util.*;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.github.megmeehey.Card.*;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 
 class DeckPile extends CardPile {
-    DeckPile(int x, int y) {
-        super(x, y);
+
+    DeckPile(TextureAtlas atlas) {
+        super(atlas);
         loadDeck();
         this.cards = shuffleDeck();
     }
 
     public Deque<Card> shuffleDeck() {
-            Deque<Card> shuffledDeck = new LinkedList<Card>();
-            List<Card> ls = (List<Card>) cards;
-            while (ls.size() > 0) {
-                int index = (int) (Math.random() * cards.size());
-                shuffledDeck.add(ls.remove(index));
-            }
-            return shuffledDeck;
+        Deque<Card> shuffledDeck = new LinkedList<Card>();
+        List<Card> ls = (List<Card>) cards;
+        while (ls.size() > 0) {
+            int index = (int) (Math.random() * cards.size());
+            shuffledDeck.add(ls.remove(index));
+        }
+        return shuffledDeck;
     }
 
     private void loadDeck() {
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.ACE, Gdx.files.internal("club1.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.TWO, Gdx.files.internal("club2.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.THREE, Gdx.files.internal("club3.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.FOUR, Gdx.files.internal("club4.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.FIVE, Gdx.files.internal("club5.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.SIX, Gdx.files.internal("club6.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.SEVEN, Gdx.files.internal("club7.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.EIGHT, Gdx.files.internal("club8.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.NINE, Gdx.files.internal("club9.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.TEN, Gdx.files.internal("club10.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.JACK, Gdx.files.internal("club11.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.QUEEN, Gdx.files.internal("club12.png")));
-        cards.add(new Card(Card.Suit.CLUBS, Card.Rank.KING, Gdx.files.internal("club13.png")));
+        cards.add(new Card(Suit.Club, Rank.Ace, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Two, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Three, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Four, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Five, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Six, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Seven, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Eight, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Nine, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Ten, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Jack, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.Queen, this.atlas));
+        cards.add(new Card(Suit.Club, Rank.King, this.atlas));
 
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.ACE, Gdx.files.internal("diamond1.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.TWO, Gdx.files.internal("diamond2.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.THREE, Gdx.files.internal("diamond3.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.FOUR, Gdx.files.internal("diamond4.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.FIVE, Gdx.files.internal("diamond5.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.SIX, Gdx.files.internal("diamond6.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.SEVEN, Gdx.files.internal("diamond7.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.EIGHT, Gdx.files.internal("diamond8.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.NINE, Gdx.files.internal("diamond9.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.TEN, Gdx.files.internal("diamond10.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.JACK, Gdx.files.internal("diamond11.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN, Gdx.files.internal("diamond12.png")));
-        cards.add(new Card(Card.Suit.DIAMONDS, Card.Rank.KING, Gdx.files.internal("diamond13.png")));
+        cards.add(new Card(Suit.Diamond, Rank.Ace, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Two, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Three, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Four, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Five, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Six, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Seven, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Eight, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Nine, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Ten, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Jack, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.Queen, this.atlas));
+        cards.add(new Card(Suit.Diamond, Rank.King, this.atlas));
 
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.ACE, Gdx.files.internal("heart1.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.TWO, Gdx.files.internal("heart2.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.THREE, Gdx.files.internal("heart3.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.FOUR, Gdx.files.internal("heart4.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.FIVE, Gdx.files.internal("heart5.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.SIX, Gdx.files.internal("heart6.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.SEVEN, Gdx.files.internal("heart7.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.EIGHT, Gdx.files.internal("heart8.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.NINE, Gdx.files.internal("heart9.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.TEN, Gdx.files.internal("heart10.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.JACK, Gdx.files.internal("heart11.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.QUEEN, Gdx.files.internal("heart12.png")));
-        cards.add(new Card(Card.Suit.HEARTS, Card.Rank.KING, Gdx.files.internal("heart13.png")));
+        cards.add(new Card(Suit.Heart, Rank.Ace, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Two, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Three, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Four, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Five, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Six, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Seven, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Eight, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Nine, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Ten, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Jack, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.Queen, this.atlas));
+        cards.add(new Card(Suit.Heart, Rank.King, this.atlas));
 
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.ACE, Gdx.files.internal("spade1.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.TWO, Gdx.files.internal("spade2.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.THREE, Gdx.files.internal("spade3.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.FOUR, Gdx.files.internal("spade4.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.FIVE, Gdx.files.internal("spade5.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.SIX, Gdx.files.internal("spade6.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.SEVEN, Gdx.files.internal("spade7.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.EIGHT, Gdx.files.internal("spade8.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.NINE, Gdx.files.internal("spade9.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.TEN, Gdx.files.internal("spade10.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.JACK, Gdx.files.internal("spade11.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.QUEEN, Gdx.files.internal("spade12.png")));
-        cards.add(new Card(Card.Suit.SPADES, Card.Rank.KING, Gdx.files.internal("spade13.png")));
+        cards.add(new Card(Suit.Spade, Rank.Ace, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Two, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Three, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Four, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Five, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Six, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Seven, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Eight, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Nine, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Ten, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Jack, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.Queen, this.atlas));
+        cards.add(new Card(Suit.Spade, Rank.King, this.atlas));
     }
-
-    @Override
-    public void display(SpriteBatch mainBatch) {
-        if (cards.isEmpty()) {
-            mainBatch.draw(Card.EMPTY, x, y);
-        } else {
-            mainBatch.draw(Card.BACKSIDE, x, y);
-        }
-    }
+}
 
     /**
      * On click if empty, remove all cards from discard and move to deck
@@ -96,20 +89,19 @@ class DeckPile extends CardPile {
      * @param tx
      * @param ty
      */
-    @Override
-    public void select(int tx, int ty) {
-        if (isEmpty()) {
-            Card card = Solitaire.discardPile.pop();
-            while (card != null) {
-                if (card.isFaceUp()) {
-                    card.flip();
-                }
-                Solitaire.deckPile.push(card);
-                card = Solitaire.discardPile.pop();
-            }
-        } else {
-            Solitaire.discardPile.push(pop());
-        }
-        return;
-    }
-}
+    // TODO select logic
+//    public void select(int tx, int ty) {
+//        if (isEmpty()) {
+//            Card card = Solitaire.discardPile.pop();
+//            while (card != null) {
+//                if (card.isFaceUp()) {
+//                    card.flip();
+//                }
+//                Solitaire.deckPile.push(card);
+//                card = Solitaire.discardPile.pop();
+//            }
+//        } else {
+//            Solitaire.discardPile.push(pop());
+//        }
+//        return;
+//    }
