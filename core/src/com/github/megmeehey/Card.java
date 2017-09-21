@@ -1,18 +1,25 @@
 package com.github.megmeehey;
 
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.Renderable;
+import com.badlogic.gdx.graphics.g3d.RenderableProvider;
+import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.ObjectSet;
+import com.badlogic.gdx.utils.Pool;
 
-class Card {
-    public final static float CARD_WIDTH = 1f;
-    public final static float CARD_HEIGHT = CARD_WIDTH * 277f / 200f;
-    public final static float MINIMUM_VIEWPORT_SIZE = 5f;
+import static com.github.megmeehey.Solitaire.CARD_HEIGHT;
+import static com.github.megmeehey.Solitaire.CARD_WIDTH;
 
+public class Card extends Renderable {
     public enum Suit {
         Club("club", 0), Diamond("diamond", 1), Heart("heart", 2), Spade("spade", 3);
         public final String name;
@@ -37,8 +44,41 @@ class Card {
         Red, Black;
     }
 
-    public static final Texture BACKSIDE = new Texture("cardback.png");
-    public static final Texture EMPTY = new Texture("empty.png");
+    public static class CardBatch extends ObjectSet<Card> implements RenderableProvider, Disposable {
+        Renderable renderable;
+        Mesh mesh;
+        MeshBuilder meshBuilder;
+
+        public CardBatch(Material material) {
+            final int maxNumberOfCards = 52;
+            final int maxNumberOfVertices = maxNumberOfCards * 8;
+            final int maxNumberOfIndices = maxNumberOfCards * 12;
+            mesh = new Mesh(false, maxNumberOfVertices, maxNumberOfIndices,
+                    VertexAttribute.Position(), VertexAttribute.Normal(), VertexAttribute.TexCoords(0));
+            meshBuilder = new MeshBuilder();
+
+            renderable = new Renderable();
+            renderable.material = material;
+        }
+
+        @Override
+        public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
+            meshBuilder.begin(mesh.getVertexAttributes());
+            meshBuilder.part("cards", GL20.GL_TRIANGLES, renderable.meshPart);
+            for (Card card : this) {
+                meshBuilder.setVertexTransform(card.transform);
+                meshBuilder.addMesh(card.vertices, card.indices);
+            }
+            meshBuilder.end(mesh);
+
+            renderables.add(renderable);
+        }
+
+        @Override
+        public void dispose() {
+            mesh.dispose();
+        }
+    }
 
     private final Suit suit;
     private final Rank rank;
@@ -51,12 +91,11 @@ class Card {
     private boolean isFaceUp;
 
     public Card(Suit suit, Rank rank, TextureAtlas atlas) {
-            front = atlas.createSprite(suit.name + rank.value);
-            back = atlas.createSprite("cardback");
             this.color = ((getSuit()  == Suit.Club) || (getSuit() == Suit.Spade)) ? Color.Black : Color.Red;
             this.suit = suit;
             this.rank = rank;
-
+            front = atlas.createSprite(suit.name + rank.value); // forms name of item in Cards.atlas
+            back = atlas.createSprite("cardback");
             front.setSize(CARD_WIDTH, CARD_HEIGHT);
             back.setSize(CARD_WIDTH, CARD_HEIGHT);
             front.setPosition(-front.getWidth() * 0.5f, -front.getHeight() * 0.5f);
@@ -99,6 +138,6 @@ class Card {
     }
 
     public boolean isNextSuitOf(Card other) {
-        return this.getRank() == Card.Rank.values()[(other.getRank().ordinal() + 1) % Rank.values().length];
+        return this.getRank().value == other.getRank().value + 1;
     }
 }

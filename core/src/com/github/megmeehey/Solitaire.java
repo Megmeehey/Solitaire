@@ -7,6 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Solitaire extends ApplicationAdapter {
+    public static final String CARDBACK = "cardback";
+    public final static float CARD_WIDTH = 1f;
+    public final static float CARD_HEIGHT = CARD_WIDTH * 277f / 200f;
+    public final static float MINIMUM_VIEWPORT_SIZE = 5f;
+
     SpriteBatch batch;
     Texture background;
     int width;
