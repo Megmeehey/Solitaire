@@ -2,9 +2,17 @@ package com.github.megmeehey;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Matrix4;
 
 class Card {
+    public final static float CARD_WIDTH = 1f;
+    public final static float CARD_HEIGHT = CARD_WIDTH * 277f / 200f;
+    public final static float MINIMUM_VIEWPORT_SIZE = 5f;
+
     public enum Suit {
         Club("club", 0), Diamond("diamond", 1), Heart("heart", 2), Spade("spade", 3);
         public final String name;
@@ -25,22 +33,38 @@ class Card {
         }
     }
 
+    public enum Color {
+        Red, Black;
+    }
+
     public static final Texture BACKSIDE = new Texture("cardback.png");
     public static final Texture EMPTY = new Texture("empty.png");
 
     private final Suit suit;
     private final Rank rank;
+    private final Sprite front;
+    private final Sprite back;
     private final Color color;
-    private boolean faceup;
-    private Texture texture;
+    public final float[] vertices;
+    public final short[] indices;
+    public final Matrix4 transform = new Matrix4();
+    private boolean isFaceUp;
 
-    public Card(Suit suit, Rank rank, FileHandle fileHandle) {
-        this.suit = suit;
-        this.rank = rank;
-        this.color = ((getSuit()  == Suit.CLUBS) || (getSuit() == Suit.SPADES)) ? Color.BLACK : Color.RED;
-        this.texture = new Texture(fileHandle);
-        this.faceup = false;
-    }
+    public Card(Suit suit, Rank rank, TextureAtlas atlas) {
+            front = atlas.createSprite(suit.name + rank.value);
+            back = atlas.createSprite("cardback");
+            this.color = ((getSuit()  == Suit.Club) || (getSuit() == Suit.Spade)) ? Color.Black : Color.Red;
+            this.suit = suit;
+            this.rank = rank;
+
+            front.setSize(CARD_WIDTH, CARD_HEIGHT);
+            back.setSize(CARD_WIDTH, CARD_HEIGHT);
+            front.setPosition(-front.getWidth() * 0.5f, -front.getHeight() * 0.5f);
+            back.setPosition(-back.getWidth() * 0.5f, -back.getHeight() * 0.5f);
+
+            vertices = convert(front.getVertices(), back.getVertices());
+            indices = new short[] {0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4 };
+        }
 
     public Suit getSuit() { return suit; }
 
@@ -52,27 +76,29 @@ class Card {
         return color;
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
+    private static float[] convert(float[] front, float[] back) {
+        return new float[] {
+                front[Batch.X2], front[Batch.Y2], 0, 0, 0, 1, front[Batch.U2], front[Batch.V2],
+                front[Batch.X1], front[Batch.Y1], 0, 0, 0, 1, front[Batch.U1], front[Batch.V1],
+                front[Batch.X4], front[Batch.Y4], 0, 0, 0, 1, front[Batch.U4], front[Batch.V4],
+                front[Batch.X3], front[Batch.Y3], 0, 0, 0, 1, front[Batch.U3], front[Batch.V3],
 
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-    }
-
-    public boolean isFaceUp() {
-        return faceup;
+                back[Batch.X1], back[Batch.Y1], 0, 0, 0, -1, back[Batch.U1], back[Batch.V1],
+                back[Batch.X2], back[Batch.Y2], 0, 0, 0, -1, back[Batch.U2], back[Batch.V2],
+                back[Batch.X3], back[Batch.Y3], 0, 0, 0, -1, back[Batch.U3], back[Batch.V3],
+                back[Batch.X4], back[Batch.Y4], 0, 0, 0, -1, back[Batch.U4], back[Batch.V4]
+        };
     }
 
     public void flip() {
-        faceup = !faceup;
+        isFaceUp = !isFaceUp;
+    }
+
+    public boolean isFaceUp() {
+        return isFaceUp;
     }
 
     public boolean isNextSuitOf(Card other) {
         return this.getRank() == Card.Rank.values()[(other.getRank().ordinal() + 1) % Rank.values().length];
-    }
-
-    public void draw(SpriteBatch mainBatch, int x, int y) {
-        mainBatch.draw(texture, x, y);
     }
 }
