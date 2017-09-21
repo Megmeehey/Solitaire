@@ -1,4 +1,4 @@
-package com.github.megmeehey;
+package com.github.megmeehey.logic;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;

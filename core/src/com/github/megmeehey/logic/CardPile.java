@@ -1,15 +1,16 @@
-package com.github.megmeehey;
+package com.github.megmeehey.logic;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class CardPile {
-    protected Deque<Card> cards;
+    protected Deque<com.github.megmeehey.logic.Card> cards;
     protected TextureAtlas atlas;
 
     public CardPile(TextureAtlas atlas) {
-        cards = new LinkedList<Card>();
+        cards = new LinkedList<com.github.megmeehey.logic.Card>();
         this.atlas = atlas;
     }
 
@@ -18,7 +19,7 @@ public class CardPile {
      * Can be null
      * @return
      */
-    Card peekFirst() {
+    com.github.megmeehey.logic.Card peekFirst() {
         return cards.peekFirst();
     } // top
 
@@ -27,7 +28,7 @@ public class CardPile {
      * Can be null
      * @return
      */
-    Card pollFirst() {
+    com.github.megmeehey.logic.Card pollFirst() {
         return cards.pollFirst();
     }
 
@@ -44,7 +45,7 @@ public class CardPile {
      * Can throw E
      * @param cardToAdd
      */
-    public void push(Card cardToAdd) {
+    public void push(com.github.megmeehey.logic.Card cardToAdd) {
         cards.push(cardToAdd);
     }
 
@@ -53,7 +54,7 @@ public class CardPile {
      * Can throw NSEE
      * @return first card
      */
-    public Card pop() {
+    public com.github.megmeehey.logic.Card pop() {
         return cards.pop();
     }
 

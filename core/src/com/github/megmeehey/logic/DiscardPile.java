@@ -1,15 +1,15 @@
-package com.github.megmeehey;
+package com.github.megmeehey.logic;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-class DiscardPile extends CardPile {
+class DiscardPile extends com.github.megmeehey.logic.CardPile {
 
     DiscardPile(TextureAtlas atlas) {
         super(atlas);
     }
 
     @Override
-    public void push(Card aCard) {
+    public void push(com.github.megmeehey.logic.Card aCard) {
         if (!aCard.isFaceUp()) {
             aCard.flip();
         }
