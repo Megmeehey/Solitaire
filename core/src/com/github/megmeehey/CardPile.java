@@ -1,29 +1,35 @@
 package com.github.megmeehey;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import java.util.Deque;
 import java.util.LinkedList;
 
-public abstract class CardPile {
-    // coordinates of the card pile
-    protected int x;
-    protected int y;
+public class CardPile {
     protected Deque<Card> cards;
+    protected TextureAtlas atlas;
 
-    CardPile(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public CardPile(TextureAtlas atlas) {
         cards = new LinkedList<Card>();
+        this.atlas = atlas;
     }
 
     /**
-     * Get first card
+     * Get first card, but not remove.
+     * Can be null
      * @return
      */
-    Card getFirst() {
-        return cards.getFirst();
+    Card peekFirst() {
+        return cards.peekFirst();
     } // top
+
+    /**
+     * Get first card, and remove.
+     * Can be null
+     * @return
+     */
+    Card pollFirst() {
+        return cards.pollFirst();
+    }
 
     /**
      * Checks if the CardPile is empty
@@ -33,20 +39,25 @@ public abstract class CardPile {
         return cards.isEmpty();
     } // empty
 
+    /**
+     * Pushes an element in the head of CardPile.
+     * Can throw E
+     * @param cardToAdd
+     */
     public void push(Card cardToAdd) {
         cards.push(cardToAdd);
     }
 
+    /**
+     * Removes and returns the first element of CardPile.
+     * Can throw NSEE
+     * @return first card
+     */
     public Card pop() {
         return cards.pop();
     }
 
-    public abstract void select(int tx, int ty);
+//  public abstract void select(int tx, int ty);
 
-    public abstract void display(SpriteBatch mainBatch);
-
-    public boolean canTake(Card aCard) {
-        return false;
-    }
-
+//  canTake
 }
